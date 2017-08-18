@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+	/*
+	 vue 是渐进式的框架
+	         只关注视图层
+	 
+	 核心点
+	 
+	 响应的数据绑定
+	 组合的视图组建
+	 
+	 虚拟dom
+	   
+	   
+	new Vue()//实例化一个vue的对象
+	
+	<div id="demo">
+		{{msg}}
+	</div>
+	<script>
+		//数据
+		 let data={
+		 	msg:"hello  vue"
+		 }
+		
+		new Vue({
+			el:"#demo",
+			data:data
+		})
+		
+	</script>
+	new Vue()---->实例化一个vue 对象
+	
+	el  是元素选择器
+	data  代理数据
+	methods  定义放大
+	
+	//声明式的渲染  只需要知道放在哪里就可以了  不需要关心怎么实现的
+	
+	var vm=new Vue({
+		el："#demo",
+		data:data,
+		methods:{
+			clickHandle(){//es6 语法
+				alert(1);
+			}
+		}
+	})
+	
+	console.log(vm.$data)//如果去vue实例对象身上的属性     需要加$   例如   vm.$data
+	
+	
+	//命令式的  就是需要进行 数据处理的
+	
+	vue  是声明式渲染
+	
+	
+	vue 命令  和  模版
+	
+	
+	
+	在vue的指令中用v-开头
+	
+	
+	内置的指令
+	
+	v-bind：属性名=属性的变量    简写   ：属性名=属性的变量 
+	
+	v-on：事件名=函数名             简写   @事件名=函数名   
+	
+	
+	
+	
+	html模版
+	
+	
+             字符串模版
+             
+             
+            模版 --render函数 自动创建的模版 
+	
+	v-html   是 把  数据中的和html文档  结构  解析为dom  结构      如果不加就是字符串
+	
+	例子
+	
+	<div  v-html="数据中key"></div>
+	
+	
+	
+	
+	
+ 	<div  v-html="html"></div>//这样就可以吧数据放到这里面了
+	
+	
+	let obj={
+		html："<div>ddddd</div>"
+	}
+	
+	
+	var vm=new Vue({
+		el:"#demo",
+		data:obj
+	})
+	
+	
+	模版里面的有个属性叫做计算属性    如果有机酸的反导这里边
+	
+	
+	class   名的  添加 
+	
+     <div id="demo">
+     	
+     	<span  v-bind="{red：addclass}">  dddd</span>
+     	
+     </div>
+	
+	let data={
+		addclass:true
+	}
+	
+	var vm=new Vue({
+		el:"#demo",
+		data:data
+	})
+	
+            用函数render  生成 dom元素
+     
+     
+     
+     render 是手动生成标签的
+     var vm = new  Vue({
+     	el:"#demo"，
+     	data:data,
+     	render(createElement){//  在这里面调用的是  createElement（）   这个函数   第一个参数是 要创建的标签
+     		
+     		var obj=createElement(
+		     	   "ul",//生成的标签
+		     	   {//这个是个属性   class名   style样式  attrs的自定义属性
+		     	   	class：{
+		     	   		bg:true
+		     	   	},
+		     	   	style:{
+		     	   		fontSize:"50px"
+		     	   	},
+		     	   	attrs:{
+		     	   		abc:"aaa"
+		     	   	}
+		     	   },
+		     	   [
+		     	   
+		     	    createElement("li","8"), //生成的li的
+		     	    createElement("li","8")
+		     	   
+		     	   ]
+     		)
+     		
+     		
+     		return obj;
+     	}
+     	
+     })
+     
+     
+     
+     字符串模版
+     
+     
+     let obj={
+     	html："<div>dddd</div>",
+     	abc:1
+     }
+     
+     //var str="<div>{{abc}}</div>";//这个外层只能有一个共同div包着  不能换行
+     var str=`<div>{{abc}}
+                   <span>dd</span>
+     </div>`;//这个外层只能有一个共同div包着           这个可以换行 用的是es6的语法
+     
+     
+     
+     var vm=new Vue({
+     	el:"#demo",
+     	data:obj,
+     	template:str
+     })
+     
+     
+     
+     
+     
+     <script  type="x-template"  id="temp">
+     	
+     	<div>{{abc}}
+             <span>dd</span>
+     	</div>
+     	
+     </script>
+     
+     
+    var vm=new Vue({
+     	el:"#demo",
+     	data:obj,
+     	template:"#temp"
+     })
+	
+	
+	数组的选项列表 
+	
+	<div v-for="val in item"> {{val}} </div>
+	//第一种
+	var list=[];
+	
+	methods:{
+		事件名（ev）{//只需要更新数据就行    视图就会更新
+			//事件处理函数中的this  指向的是  new 的这个根实例
+			
+			if(ev.keyCode===13){
+				this.list.push({//这里面的list  是在上面声明
+					"title":ev.target.value//这是input中的值
+				})
+			}
+		}
+	}
+	   
+	//第二种  
+	
+	
+     //事件修饰符
+     
+     例子
+     <input type="text"   v-on:keyup.enter="addTodo"/>     
+     v-on：事件名.键值   
+                 键值    有     .enter  .tab   .delete   .esc   .space .up  .down  .left   .right
+     .ctrl  .alt .shift  .meta   .键值
+     
+                修饰符
+       .stop   .prevent   .capture   .self .once
+         
+    用数据去更新视图   
+    
+    一上来 是有一个数据去显示的
+    
+    当事件触发是我们用新的数据区代替他      因为vue 是一个数据驱动的所以  我们需要提前在 data中声明一个变量来存储这个数据
+    
+     <input type="text"   v-on:keyup.enter="addTodo(123,$event)" v-model="todo"/>  
+    
+    var list=[];
+    
+	new Vue({
+	   el："#demo",
+	   data：{
+	     list：list，
+	     todo：""
+	   },
+	   methods:{
+	 	  addTodo(data,ev){
+	 	  
+	 	  	this.list.push({
+	 	  		
+	 	  		title:this.todo
+	 	  	
+	 	  	})
+	 	  
+	 	  this.todo="";
+	 	  
+	 	  }
+	   
+	   
+	   }
+	})
+	
+	
+	如果传参数的话    data接收的是参数  如果要找事件对象   只能是 传入  $event   而且是手动传入的
+	
+	
+	
+	
+	v-show 是个  显示隐藏的元素   如果是true 显示  false  不显示
+	
+	
+	例子
+	
+	
+	<span   v-show="list.length"></span>   //存在显示  不存在 不显示
+	<span   v-show="!list.length"></span>   //不存在显示  存在 不显示
+	
+	
+	
+	
+	是否是选中状态 我们需要在数据中添加入一个状态
+	
+	
+	例子
+	
+	
+	var list=[
+				{
+					titile:"sss",
+					ischecked:false
+				},
+				{
+					titile:"sss",
+					ischecked:true
+				}
+	]
+	
+	
+	
+	双向绑定  也可以用到  <input type="checkbox"    v-model="true"  />   就是选中  false  就是不选中
+															
+	删除  传入的是 这一条数据      例子   <li v-for="val in list">
+		
+							<button  @click="deletetodo(val)"></button>//传入的是这一条数据
+		
+						</li>
+	    var list=[];
+    
+	new Vue({
+	   el："#demo",
+	   data：{
+	     list：list，
+	     todo：""
+	   },
+	   methods:{
+	 	  addTodo(data,ev){
+	 	  
+	 	  	this.list.push({
+	 	  		
+	 	  		title:this.todo,
+	 	  		ischecked:false
+	 	  	
+	 	  	})
+	 	  
+	 	  this.todo="";
+	 	  
+	 	  },
+	 	  
+	 	  deleteTode(todo){
+	 	  	//todo 接收到的是这条数据
+	 	     var  index=this.list.indexOf(todo), 位置
+	 	     
+	 	     this.list.splice(index,1);  删除一项    位置
+	 	  }
+	   
+	   
+	   }
+	})
+	
+	编辑修改
+	
+	
+	双击  添加的   class
+	如果想要想要修改   那么  当双击的时候我们需要把当前的这个数据 记录下来 
+	 然后我们让他和 for 循环中的数据进行 对比  如果一致的话 就添加上一个calss
+	 
+	 
+	 例子 
+	 <input type="text"   v-model="todo" />
+	 <li    class="todo"  :class="{conpleted:item.isChecked,editing:item===edtorTodos}"></li>
+	 
+	 <input type="text" ＠keyup.13="edtorTodoed(item)"  ＠keyup.esc="cancelTodo(item)"   v-foucs="edtorTodo==item"  v-model="item.title"  @blur="edtorTodoed(item)" />
+	new Vue({
+		#el:"#demo",
+		data:{
+			todo:"",
+			edtorTodos:"",//这是记录正在编辑的数据  可以进行对比    给li  添加class
+			beforeTitle:""
+		},
+		methods:{
+			addTodo(){
+				this.list.push({
+					"title":this.todo
+				})
+				this.todo="";
+			},
+			deleteTodo(todo){
+				var index=this.list.indexOf(todo);
+				this.list.splice(index,1);
+			},
+			edtorTodo(todo){
+				//编辑任务的时候　　记录下这条数据的ｔｉｔｌｅ　　　方便在取消编辑的时候　　重新给之前的值
+				this.beforeTitle=todo;
+				this.edtorTodos=todo;
+			},
+			edtorTodoed(todo){
+			    this.edtorTodos="";//  清空之后　　　ｌｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			},
+			cancelTodo(todo){
+			
+			    toto.title=this.beforeTitle;
+			    this.beforeTitle=""
+			    //让ｄｉｖ显示　　　让ｉｎｐｕｔ消失    lｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			    
+			    this.edtorTodos="";
+			
+			}
+			
+		},
+		directives:{//自定义指令   也是写在标签上
+		     "foucs":{  
+ // 每次点击的时候  这个 v-foucs  里面的  edtorTodos  都会更新 如果    更新他就会调用   自定义函数 foucs里面的钩子函数  update
+		     	update(el,binding){//el当前绑定标签     这个标签的对象  binding  里面的数据很多
+		     	     //这个binding  里面的数据   里面有一个  value   他的返回值是  true  和 false    他
+		     	    //是计算你里面表达式是否 成立  如果成立返回  true  如果不成立  返回false
+		     	    if(binding.value){
+		     	         el.foucs();
+		     	    }
+		     	     
+		     	
+		     	}
+		     
+		     }
+		
+		
+		}
+		
+	})
+	
+	
+	
+	自定义指令   筛选
+	
+　　　　<li> {{
+	
+	      list.filter(function(item){//　　　这是一个筛选函数　　　ｉｔｅｍ　是他遍历的每一个数据　　　
+	      							//他ｒｅｔｕｒｎ返回的 每一个数据  就重新装进新的一个数组
+	      	 
+	      	 return !item.ischecked;
+	      	
+	      }).length
+	
+			}}
+	</li>
+	
+	
+	
+	
+	vue  中的  计算属性   不推荐在模版中写了逻辑
+	
+	
+	 <input type="text"   v-model="todo" />
+	 <li    class="todo"  :class="{conpleted:item.isChecked,editing:item===edtorTodos}"></li>
+	 <li>{{nochecked}}</li>
+	 <input type="text" ＠keyup.13="edtorTodoed(item)"  ＠keyup.esc="cancelTodo(item)"  ＝ v-foucs="edtorTodo==item"  v-model="item.title"  @blur="edtorTodoed(item)" />
+	new Vue({
+		#el:"#demo",
+		data:{
+			todo:"",
+			edtorTodos:"",//这是记录正在编辑的数据  可以进行对比    给li  添加class
+			beforeTitle:""
+		},
+		computed:{//获取到的是函数的返回值     　　　　　　　　computed　计算属性
+			nochecked:function(){
+			
+				return this.list.filter(function(item){//　　　这是一个筛选函数　　　ｉｔｅｍ　是他遍历的每一个数据　　　
+	      							//他ｒｅｔｕｒｎ返回的 每一个数据  就重新装进新的一个数组
+	      	 
+	      	 			return !item.ischecked;
+	      	
+	      		}).length;
+			}
+		},
+		methods:{
+			addTodo(){
+				this.list.push({
+					"title":this.todo
+				})
+				this.todo="";
+			},
+			deleteTodo(todo){
+				var index=this.list.indexOf(todo);
+				this.list.splice(index,1);
+			},
+			edtorTodo(todo){
+				//编辑任务的时候　　记录下这条数据的ｔｉｔｌｅ　　　方便在取消编辑的时候　　重新给之前的值
+				this.beforeTitle=todo;
+				this.edtorTodos=todo;
+			},
+			edtorTodoed(todo){
+			    this.edtorTodos="";//  清空之后　　　ｌｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			},
+			cancelTodo(todo){
+			
+			    toto.title=this.beforeTitle;
+			    this.beforeTitle=""
+			    //让ｄｉｖ显示　　　让ｉｎｐｕｔ消失    lｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			    
+			    this.edtorTodos="";
+			
+			}
+			
+		},
+		directives:{//自定义指令   也是写在标签上
+		     "foucs":{   每次点击的时候  这个 v-foucs  里面的  edtorTodos  都会更新 如果    更新他就会调用   自定义函数 foucs里面的钩子函数
+		     //  update
+		     	update(el,binding){//el当前绑定标签     这个标签的对象  binding  里面的数据很多
+		     	     //这个binding  里面的数据   里面有一个  value   他的返回值是  true  和 false    他
+		     	    //是计算你里面表达式是否 成立  如果成立返回  true  如果不成立  返回false
+		     	    if(binding.value){
+		     	         el.foucs();
+		     	    }
+		     	     
+		     	
+		     	}
+		     
+		     }
+		
+		
+		}
+		
+	})
+	
+	
+	
+	ｗａｃｔｈ　深度　　ｗａｔｃｈ　　监控数据
+	
+	
+	存取ｌｏｃａｌｓｔｏｒａｇｅ中的数据
+	
+	
+	
+	var store={
+	  
+	  save(key,value){
+	  
+	  localStorage.setItem(key,JSON.stringify(value));
+	  
+	  },
+	  
+	  fetch(key){
+	   
+	   	return  JSON.parse(localStorage.getItem(key))  ||  [];
+	  
+	  }
+	
+	}
+	
+	
+	var list=stroe.fetch("miaov-class");   取的数据值
+	
+	
+	<input type="text"   v-model="todo" />
+	 <li    class="todo"  :class="{conpleted:item.isChecked,editing:item===edtorTodos}"></li>
+	 <li>{{nochecked}}</li>
+	 <input type="text" ＠keyup.13="edtorTodoed(item)"  ＠keyup.esc="cancelTodo(item)"  ＝ v-foucs="edtorTodo==item"  v-model="item.title"  @blur="edtorTodoed(item)" />
+	new Vue({
+		#el:"#demo",
+		data:{
+			todo:"",
+			edtorTodos:"",//这是记录正在编辑的数据  可以进行对比    给li  添加class
+			beforeTitle:""
+		},
+		watch:{//目的是做监控　　　被监控的属性作为ｋｅｙ值　　后面是个value值　value值是一个函数　如果这个属性　发生变化后面的函数会发生变化
+		　　<!--　list:function(){
+		          //当list发生变化  则调用这个函数  只监控list 一层  里面的属性监控不到
+		          store.save("miaov-class",this.list)
+			}-->
+			list:{//深度监控
+				handler:function(){
+					store.save("miaov-class",this.list)
+				},
+				deep:true    //他是ｔｒｕｅ　　就是深度监控
+			}
+		},
+		computed:{//获取到的是函数的返回值     　　　　　　　　computed　计算属性
+			nochecked:function(){
+			
+				return this.list.filter(function(item){//　　　这是一个筛选函数　　　ｉｔｅｍ　是他遍历的每一个数据　　　
+	      							//他ｒｅｔｕｒｎ返回的 每一个数据  就重新装进新的一个数组
+	      	 
+	      	 			return !item.ischecked;
+	      	
+	      		}).length;
+			}
+		},
+		methods:{
+			addTodo(){
+				this.list.push({
+					"title":this.todo
+				})
+				this.todo="";
+			},
+			deleteTodo(todo){
+				var index=this.list.indexOf(todo);
+				this.list.splice(index,1);
+			},
+			edtorTodo(todo){
+				//编辑任务的时候　　记录下这条数据的ｔｉｔｌｅ　　　方便在取消编辑的时候　　重新给之前的值
+				this.beforeTitle=todo;
+				this.edtorTodos=todo;
+			},
+			edtorTodoed(todo){
+			    this.edtorTodos="";//  清空之后　　　ｌｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			},
+			cancelTodo(todo){
+			
+			    toto.title=this.beforeTitle;
+			    this.beforeTitle=""
+			    //让ｄｉｖ显示　　　让ｉｎｐｕｔ消失    lｉ　里面数据进行数据对比的时候　应为为空　所以不添加ｃｌａｓｓ
+			    
+			    this.edtorTodos="";
+			
+			}
+			
+		},
+		directives:{//自定义指令   也是写在标签上
+		     "foucs":{   每次点击的时候  这个 v-foucs  里面的  edtorTodos  都会更新 如果    更新他就会调用   自定义函数 foucs里面的钩子函数
+		     //  update
+		     	update(el,binding){//el当前绑定标签     这个标签的对象  binding  里面的数据很多
+		     	     //这个binding  里面的数据   里面有一个  value   他的返回值是  true  和 false    他
+		     	    //是计算你里面表达式是否 成立  如果成立返回  true  如果不成立  返回false
+		     	    if(binding.value){
+		     	         el.foucs();
+		     	    }
+		     	     
+		     	
+		     	}
+		     
+		     }
+		
+		
+		}
+		
+	})
+	
+	
+	
+	组件化开发
+	　
+	不用系统　自带的　ｓｅｌｅｃｔ　只能自己自定义　　　　　用ｄｉｖ模拟
+	
+	组建的基本构成　　　样式结构　　行为逻辑　　　数据　
+	
+	ｖｕｅ　　中组件　　是自定义标签　　
+	
+	ｖｕｅ　中　　有单文件组件　　是ｈｅｌｌｏ．ｖｕｅ　　以．ｖｕｅ结尾的
+	
+	
+	<div  id="">
+		<h2></h2>
+		<custom-select></custom-select>//这是一个自定义标签也是一个组件标签
+	</div>
+		//全局注册
+	　　　//使用组件的时候需要先注册组件
+	　　　Vue.component("custom-select",{
+		       template:`
+		       <div><span>sdff</span></div>
+		       `
+		})//这就是注册组件
+		
+		
+		
+		局部注册
+		
+		new Vue({
+			el:"#app",
+			components:{
+				"custom-select":{
+					template:`<div>ssss</div>`
+				}
+			}
+		});
+		
+		组件传入数据(参数)
+		
+		
+		 可以在组件上使用自定义的属性绑定数据     在组件中需要显示的用props声明自定义属性名
+		 
+		 
+		<div  id="">
+			<h2></h2>
+			<custom-select btn-value="go"></custom-select>//这是一个自定义标签也是一个组件标签
+		</div>
+		
+		上边的btn-value   是 props中的 btnValue    
+		template中的btnValue  绑定属性  用v-bind  所以v-bind:value="btnValue"
+		
+		
+		
+		　Vue.component("custom-select",{
+			   data:function(){//此处是函数
+			   	  return {
+			   	  	selectshow:false
+			   	  };//返回的是一个对象
+			   },
+			   props:["btnValue"],//用的是数组
+		       template:`
+		       <div><span>sdff</span></div>
+		       <input type="button" v-bind:value="btnValue" />
+		       `
+		});
+		
+		
+		new  Vue({
+		    el:"#app"
+		});
+	
+		使用　ｉｓ＝＂标签名　或者是组件名＂　　放得标签里
+		
+		
+----------------------------------------------------		
+		父子组件
+		 
+		<div  id="">
+			<h2></h2>
+			<custom-select btn-value="go" v-bind:list="list1"></custom-select>//这是一个自定义标签也是一个组件标签
+		</div>
+		
+		
+		父组件
+		　Vue.component("custom-select",{
+			   data:function(){//此处是函数
+			   	  return {
+			   	  	selectshow:false，
+			   	  	val:""//这里的对象目前是接　子组件返回数据
+			   	  };//返回的是一个对象
+			   },
+			   props:["btnValue","list"],//用的是数组
+		       template:`
+		       <div><span>sdff</span></div>
+		       <input type="button" v-bind:value="btnValue" />
+		       <input type="text" v-bind:value="val" />
+		       <custom-list v-show="selectshow" :list="list" 　@receive="changeValueHandle" ></custom-list>//子组件
+		       `,
+		       methods:{//receive  这个是自定义的时间
+			       	changeValueHandle(value){
+			       		this.val=value;
+			       	}
+		       }
+		});
+		
+		子组件
+		Vue.component("custom-list",{
+				props:["list"]
+		       template:`
+		       <ul>
+		       	<li v-for="item of list" @click="selectValueHandle(item)" >{item}</li>
+	       </ul>`,
+	       methods:{
+	        	selectValueHandle:function(item){
+	        		//点击的时候告知父级　改变ｖａｌ的值
+	        		this.$emit("receive",item)//第一个参数是自定义数据　绑在父级   绑在父级上的事件　要放在　父级中的ｍｅｔｈｏｄｓ中
+	        	}
+	       }
+		});
+		
+		
+		var data={
+			list1:["dddd","点点滴滴"],
+			list2:["dddd","谁顶顶顶顶顶"]
+		}
+		
+		
+		new Vue({
+			el:"#app",
+			data:data
+		})
+		
+		
+		
+		父组件　通过根目录中的数据传入到　　父组件中　　父组件的自定义标签用自定义属性接收　
+		之后传入到ｐｒｏｐｓ中，ｐｒｏｐｓ用属性名接收　　然后再用同样的方法　传入子组件　
+		
+		
+		
+		
+-------------------------------------------	
+
+
+			单向数据流
+			
+			
+			<div id="app">
+				<h3>父组件</h3>
+				<p>{{count}}</p>
+				<custom-component :count="count" @incrementClick="countHandl"></custom-component>
+			</div>
+			
+			Vue.component("custom-component",{
+				//props:["count"],//这是未验证的　　　如果验证传入的参数　　　那么他需要改成　一个对象
+				props:{
+					count:{//count  是传入的参数  只不过作为了对象的下标
+					   //type:Number,//这是传入的参数的类型设定
+					   validator:function(value){
+					   	  //这里的value就是count
+					   	  //这是自定义的验证函数
+					   	  //return true;  是通过的
+					   	  
+					   	  return value > 10;
+					   }
+					}
+				},
+				data(){
+					return {
+						incrementCount:this.count///这ｔｈｉｓ．ｃｏｕｎｔ　就是　外边传入的ｃｏｕｎｔ
+					}
+				},
+				
+				
+				template:
+				`<div>
+					 <input type="text"  v-model="incrementCount"/>
+					<input type="button" name="" id="" value="改变值"　　@click="changeCount" />
+				</div>`,
+				methods:{
+				     changeCount(){
+				     	this.incrementCount++
+				     	this.$emit("countHandl")
+				     }
+			     }
+			});
+			
+			new Vue({
+				el:"#app",
+				data:{
+					count:0
+				},
+				methods:{
+					countHandl(){
+						this.count++;
+					}
+				}
+			})
+
+
+   　　　　　　计算属性是依赖ｄａｔａ存在的，并且计算属性是　　是一个函数　
+
+     -----------------------------------------------------
+     使用slot 分发内容
+     
+     
+     <div id="app">
+     	<h2>自定义组件</h2>
+     	<custom>
+     		//<div>我是html</div>//这里的div会替代  组件中的solt   如果写入插入 如果没有内容这显示默认
+     		
+     		<div slot="one">替换第一个</div>
+     		
+     		<div slot="three">替换第三个</div>
+     		
+     		<template solt="two">
+     			<div >替换第二个</div>
+     			<div >替换第二个</div>
+     			<div >替换第二个</div>
+     			<div >替换第二个</div>
+     			<div >替换第二个</div>
+     		</template>
+     		
+     	</custom>
+     </div>
+	
+	//定制模版
+	
+	
+	 Vue.component("custom",{
+	 	<!--template:`
+	 	<div>
+	 		<slot></slot>
+	 		<p>这是第一个提醒</p>
+	 		<p>这是第一个提醒</p>
+	 		<p>这是第一个提醒</p>
+	 		<p>这是第一个提醒</p>
+	 		<p>这是第一个提醒</p>
+	 	</div>`,-->
+	<!-- 	template:`
+	 	<div>
+	 		<slot>//如果组件中没有传入html结构则显示原来的p标签  如果传入这会替换
+		 		<p>这是第一个提醒</p>
+		 		<p>这是第一个提醒</p>
+		 		<p>这是第一个提醒</p>
+		 		<p>这是第一个提醒</p>
+		 		<p>这是第一个提醒</p>
+	 		</slot>
+	 	</div>`,-->
+	 	template:`
+	 	<div>
+	 		<slot name="one">
+		 		<p>这是第一个提醒</p>
+		 	</slot>
+		 	<slot  name="three">
+		 		<p>这是第一个提醒</p>
+		 	</slot>
+		 	<slot  name="two">
+		 		<p>这是第一个提醒</p>
+		 	</slot>
+	 	
+	 	</div>`,
+	 	
+	 	
+	 })
+    
+    new Vue({
+    	el:"app"
+    })
+	 */
+</body>
+</html>
+

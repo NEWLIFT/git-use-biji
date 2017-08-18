@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+<!-----
+	
+	创建项目
+	
+	第一步　安装　ｎｏｄｅ
+	
+	第二步　ｎｐｍ　ｉｎｓｔａｌｌ　－ｇ　ｖｕｅ－ｃｌｉ　　　
+	
+	第三步　　查看是否　　安装成功　　　用　　　ｖｕｅ　－Ｖ　　　　可以查看版本号　　　如果查到则是成功
+	
+	第四步　项目创建　　　
+	
+	　　　　项目的初始化　　　　ｖｕｅ　　ｉｎｉｔ　ｗｅｂｐａｃｋ　　项目名（自己起）
+	　　　　
+	　　　　安装项目依赖　　　ｃｄ　项目名
+	
+	　　　　ｎｐｍ　　ｉｎｓｔａｌｌ　　　／／这是安装依赖
+	
+	　　　　启动项目　　　ｎｐｍ　ｒｕｎ　ｄｅｖ
+	
+	／／这里边的自动创建了文件
+	
+	
+	
+	清空　ａｐｐ．ｖｕｅ　　中的　　样式和　ｈｔｍｌ中的组件上边的内容
+	
+	清楚　ｈｅｌｌｏ组件中的　样式数据和　结构
+	
+	
+	安装ｖｕｘ　　组件库
+	
+	ｎｐｍ　ｉｎｓｔａｌｌ　－Ｓ　ｖｕｘ
+	
+	
+	
+	使用　ｖｕｘ　的组件
+	
+	功能型　
+	
+	ｕｉ型
+	
+	混合型
+	
+	ｖｕｘ　　提供的布局组件　　　　ＶｉｅｗＢｏｘ　　基本布局组件
+	
+	
+	在使用页面　使用　import { ViewBox } from 'vux'　　语法导入进来
+	
+	
+	
+	VUX的样式是通过ｌｅｓｓ　写　　我们需要给他配置　　ｌｅｓｓ的ｌｏａｄｅｒ
+	
+	
+	ｎｐｍ　ｉｎｓｔａｌｌ　－Ｄ　ｌｅｓｓ　ｌｅｓｓ－ｌｏａｄｅｒ
+	
+	然后设置　ｈｔｍｌ，ｂｏｄｙ　和容器　宽高为１００％　　　　ｈｔｍｌ，ｂｏｄｙ　　ｏｖｅｒｆｌｏｗ－ｘ：ｈｉｄｄｅｎ；　ｍａｒｇｉｎ：０；
+	
+	
+	然后再　ｓｔｙｌｅ中引入　　　 @import '~vux/src/styles/reset.less';
+	
+	并且在ｓｔｙｌｅ　中添加<style lang="less">
+		
+	需要引入ｘｈｅａｄｅｒ组件
+	
+	
+	之后安装　一个语言包
+	
+	ｎｐｍ　ｉｎｓｔａｌｌ　ｖｕｘ－ｌｏａｄｅｒ　－－ｓａｖｅ－ｄｅｖ
+	
+	完成后去修改配置
+	
+	配置　ｂｕｉｌｄ／ｗｅｂｐａｃｋ．ｄｅｖ．ｃｏｎｆ．ｊｓ
+	
+	ｃｏｎｓｔ　ｖｕｘＬｏａｄｅｒ＝ｒｅｑｕｉｒｅ（＇ｖｕｘ－ｌｏａｄｅｒ＇）；
+	
+	ｂａｓｅＷｅｂｐａｃｋＣｏｎｆｉｇ＝ｖｕｅＬｏａｄｅｒ．ｍｅｒｇｅ（ｂａｓｅＷｅｂｐａｃｋＣｏｎｆｉｇ，｛ｐｌｕｇｉｎｓ：［＇ｖｕｘ－ｕｉ＇］｝）；
+	
+	上边都是　做的准备工作　　之后可以　按模块　加载任何的模块
+	
+	
+	如果加载数据　　　用ｊｓｏｎｐ　　　需要加载　
+	
+	ｎｐｍ　ｉｎｓｔａｌｌ　－Ｓ　ｖｕｅ－ｊｓｏｎｐ　　安装　ｊｓｏｎｐ的插件
+	
+	
+	在ｍｉａｎ．ｊｓ中导入　ｖｕｅ－ｊｓｏｎｐ
+	
+	import VueJsonp from 'vue-jsonp'
+	
+	
+	之后　再把它挂载到ｖｕｅ下
+	
+	Vue.use(VueJsonp);
+	
+	当页面　加载成功的时候需要　加载数据　　所以需要在　ａｐｐ．ｖｕｅ下　加载上　ｃｒｅａｔｅｄ
+	
+	
+	
+	
+	里面数据进行取值
+	
+	 this.$jsonp('http://3g.163.com/touch/jsonp/sy/recommend/0-9.html').then(data => {
+		 //	console.log(data)
+		 	//console.log(this.list)
+		 	//幻灯盘的数据
+		 	this.list=data.focus.filter(item =>{
+		 		return item.addata===null;
+		 	}).map(item => {//filter 是吧不需要的进行排除　　　通过　ｍａｐ方法　是把这个对象中的，每一个数据重新进行编排
+		 		    return {
+		 		    	url:item.link,
+		 		    	img:item.picInfo[0].url,
+		 		    	title:item.title
+		 		    }
+		 	})
+		 	//首屏的新闻数据
+		 	
+		 	 	this.list1=data.focus.filter(item =>{
+		 		return item.addata===null;
+		 	}).map(item => {//filter 是吧不需要的进行排除　　　通过　ｍａｐ方法　是把这个对象中的，每一个数据重新进行编排
+		 		    return {
+		 		    	src: item.picInfo[0].url,
+			        title:item.title,
+			        desc: item.digest,
+			        url: item.link
+		 		    }
+		 	})
+		 	
+		 	//滚动新闻
+		 	
+		 	this.list3=data.live.filter(item =>{
+		 		return item.addata===null;
+		 	}).map(item => {//filter 是吧不需要的进行排除　　　通过　ｍａｐ方法　是把这个对象中的，每一个数据重新进行编排
+		 		    return {
+			        title:item.title,
+		 		    }
+		 	})
+		 	
+		 	
+		 });//第一个参数是地址　　　第二个参数是　返回的对象（数据）
+		 
+		 
+		 
+		 
+		 
+		 下载　ｓｃｒｏｌｌ　的插件
+		 
+		 
+	
+------>
+
+
+
+
+github  笔记　　
+　
+
+第一步注册　账号　　安装ｇｉｔ
+
+
+第二部建立身份标识
+
+在ｇｉｔ中执行　
+
+git config --global user.name  sanxian 
+git config --global user.email sanxian@126.com 
+
+第二步
+
+ｃｄ　／ｄ（进入你想进入的硬盘内）
+
+ｍｋｄｉｒ　ｄｅｍｏ（这个是新建的文件夹－－－－自动创建的）
+
+ｇｉｔ　ｉｎｉｔ　（初始化本地仓库）
+
+把你想要的文件复制到这里边
+
+第三部　　添加
+
+ｇｉｔ　ａｄｄ　＊　　添加需要提交的文件
+
+第四部
+
+提交　ｇｉｔ　ｃｏｍｍｉｔ　－ｍ　＇注释的内容＇　　提交到本地　仓库
+
+第五步
+
+和远程的仓库项目关联
+
+ｇｉｔ　ｒｅｍｏｔｅ　ａｄｄ　ｏｒｉｇｉｎ　https://github.com/NEWLIFT/vueproject.git
+
+
+第六步　提交到远程仓库
+
+git push -u origin master //提交到远程仓库
+
+
+$git fetch origin //获取远端库最新信息
+$git diff master origin/master //作比较
+$git merge origin/master //合并本地仓库代码
+
+
+
+
+
+
+
+
+</body>
+</html>
+

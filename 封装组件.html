@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<script type="text/javascript"  src="./vue.js"></script>
+	<style type="text/css">
+		
+	</style>
+</head>
+<body>
+	<div id="app">
+		<m-modal modal-title="提醒"></m-modal>
+	</div>
+	<script>
+		Vue.compnent("m-modal",function(){
+			 props:{
+			 	modalTitle:{
+			 		type:String,
+			 		default:"这是一个模态框"
+			 	}
+			 },
+			template: `<div class="modal">
+							<div class="modal-header">
+								<h4> {{modalTitle}}</h4>
+							</div>
+							<div class="modal-content">
+								<div>
+									在这里添加neirong
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input class="btn blue" type="button"  value="确定" />
+								<input class="btn" type="button"  value="取消" />
+							</div>
+						</div>`
+		});
+		new Vue({
+			el:"#app",
+			data:{}
+		});
+	</script>
+</body>
+</html>

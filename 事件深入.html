@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<script type="text/javascript"  src="./vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<button v-on:click="show()">
+			按钮
+		</button>
+	</div>
+	<script>
+		new Vue({
+			el:"#app",
+			data:{
+				arr:["a","v","g","f"],
+				json:{"a":"apple","b":"orange","c":"bananer"}
+			},
+			methods:{
+				show:function(){
+					alert(1)
+				}
+			}
+		})
+	</script>
+	
+	
+	
+	
+</body>
+</html>
